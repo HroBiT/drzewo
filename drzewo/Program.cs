@@ -1,66 +1,138 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 
-public class Heap
+public class TreeNode
 {
-    private List<int> array;
+    public int Value;
+    public TreeNode Left;
+    public TreeNode Right;
 
-    public Heap()
+    public TreeNode(int value)
     {
-        array = new List<int>();
+        Value = value;
+        Left = null;
+        Right = null;
+    }
+}
+
+public class CustomBinaryTree
+{
+    private TreeNode root;
+
+    public CustomBinaryTree()
+    {
+        root = null;
     }
 
-    private void HeapifyUp(int index)
+    // Metoda do dodawania nowego elementu
+    public void Add(int value)
     {
-        int parent = (index - 1) / 2;
-        while (index > 0 && array[parent] < array[index])
+        if (root == null)
         {
-            Swap(parent, index);
-            index = parent;
-            parent = (index - 1) / 2;
+            root = new TreeNode(value);
+        }
+        else
+        {
+            AddRecursively(root, value);
         }
     }
 
-    private void Swap(int index1, int index2)
+    private void AddRecursively(TreeNode node, int value)
     {
-        int temp = array[index1];
-        array[index1] = array[index2];
-        array[index2] = temp;
-    }
-
-    public void Insert(int value)
-    {
-        array.Add(value);
-        HeapifyUp(array.Count - 1);
-    }
-
-    public void Print()
-    {
-        Console.WriteLine("Heap from 10 to 0:");
-        for (int i = array.Count - 1; i >= 0; i--)
+        if (value % 2 == 0)
         {
-            Console.WriteLine(array[i]);
+            // Dodawanie do lewego poddrzewa dla wartości parzystych
+            if (node.Left == null)
+            {
+                node.Left = new TreeNode(value);
+            }
+            else
+            {
+                AddRecursively(node.Left, value);
+            }
+        }
+        else
+        {
+            // Dodawanie do prawego poddrzewa dla wartości nieparzystych
+            if (node.Right == null)
+            {
+                node.Right = new TreeNode(value);
+            }
+            else
+            {
+                AddRecursively(node.Right, value);
+            }
+        }
+    }
+
+    // Metoda do wyszukiwania elementu
+    public bool Search(int value)
+    {
+        return SearchRecursively(root, value);
+    }
+
+    private bool SearchRecursively(TreeNode node, int value)
+    {
+        if (node == null)
+        {
+            return false;
+        }
+
+        if (node.Value == value)
+        {
+            return true;
+        }
+
+        if (value % 2 == 0)
+        {
+            // Wyszukiwanie w lewym poddrzewie dla wartości parzystych
+            return SearchRecursively(node.Left, value);
+        }
+        else
+        {
+            // Wyszukiwanie w prawym poddrzewie dla wartości nieparzystych
+            return SearchRecursively(node.Right, value);
+        }
+    }
+
+    // Metoda do wyświetlania drzewa (in-order traversal)
+    public void InOrderTraversal()
+    {
+        InOrderTraversalRecursively(root);
+        Console.WriteLine();
+    }
+
+    private void InOrderTraversalRecursively(TreeNode node)
+    {
+        if (node != null)
+        {
+            InOrderTraversalRecursively(node.Left);
+            Console.Write(node.Value + " ");
+            InOrderTraversalRecursively(node.Right);
         }
     }
 }
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        Heap heap = new Heap();
-        heap.Insert(10);
-        heap.Insert(8);
-        heap.Insert(9);
-        heap.Insert(7);
-        heap.Insert(5);
-        heap.Insert(1);
-        heap.Insert(3);
-        heap.Insert(6);
-        heap.Insert(4);
-        heap.Insert(0);
-        heap.Insert(2);
+        CustomBinaryTree tree = new CustomBinaryTree();
+        
+        // Dodawanie elementów do drzewa
+        tree.Add(10);
+        tree.Add(15);
+        tree.Add(8);
+        tree.Add(20);
+        tree.Add(13);
+        tree.Add(7);
+        tree.Add(22);
 
-        heap.Print();
+        // Wyświetlanie drzewa
+        Console.WriteLine("In-order traversal:");
+        tree.InOrderTraversal();
+
+        // Wyszukiwanie elementów w drzewie
+        Console.WriteLine("Search 15: " + tree.Search(15)); // true
+        Console.WriteLine("Search 21: " + tree.Search(21)); // false
     }
 }
