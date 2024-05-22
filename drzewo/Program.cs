@@ -23,7 +23,6 @@ public class CustomBinaryTree
         root = null;
     }
 
-    // Metoda do dodawania nowego elementu
     public void Add(int value)
     {
         if (root == null)
@@ -40,7 +39,6 @@ public class CustomBinaryTree
     {
         if (value % 2 == 0)
         {
-            // Dodawanie do lewego poddrzewa dla wartości parzystych
             if (node.Left == null)
             {
                 node.Left = new TreeNode(value);
@@ -52,7 +50,6 @@ public class CustomBinaryTree
         }
         else
         {
-            // Dodawanie do prawego poddrzewa dla wartości nieparzystych
             if (node.Right == null)
             {
                 node.Right = new TreeNode(value);
@@ -64,7 +61,6 @@ public class CustomBinaryTree
         }
     }
 
-    // Metoda do wyszukiwania elementu
     public bool Search(int value)
     {
         return SearchRecursively(root, value);
@@ -84,17 +80,14 @@ public class CustomBinaryTree
 
         if (value % 2 == 0)
         {
-            // Wyszukiwanie w lewym poddrzewie dla wartości parzystych
             return SearchRecursively(node.Left, value);
         }
         else
         {
-            // Wyszukiwanie w prawym poddrzewie dla wartości nieparzystych
             return SearchRecursively(node.Right, value);
         }
     }
 
-    // Metoda do wyświetlania drzewa (in-order traversal)
     public void InOrderTraversal()
     {
         InOrderTraversalRecursively(root);
@@ -117,22 +110,20 @@ class Program
     static void Main()
     {
         CustomBinaryTree tree = new CustomBinaryTree();
-        
-        // Dodawanie elementów do drzewa
-        tree.Add(10);
-        tree.Add(15);
-        tree.Add(8);
-        tree.Add(20);
-        tree.Add(13);
-        tree.Add(7);
-        tree.Add(22);
 
-        // Wyświetlanie drzewa
-        Console.WriteLine("In-order traversal:");
+        tree.Add(1);
+        tree.Add(2);
+        tree.Add(3);
+        tree.Add(4);
+        tree.Add(5);
+        tree.Add(6);
+        tree.Add(7);
+        tree.Add(8);
+        tree.Add(9);
+        tree.Add(10);
+
+        Console.WriteLine("drzewo:");
         tree.InOrderTraversal();
 
-        // Wyszukiwanie elementów w drzewie
-        Console.WriteLine("Search 15: " + tree.Search(15)); // true
-        Console.WriteLine("Search 21: " + tree.Search(21)); // false
     }
 }
