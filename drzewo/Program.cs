@@ -1,129 +1,60 @@
-using System;
-
-public class TreeNode
+internal class Program
 {
-    public int Value;
-    public TreeNode Left;
-    public TreeNode Right;
-
-    public TreeNode(int value)
+    private static void Main(string[] args)
     {
-        Value = value;
-        Left = null;
-        Right = null;
-    }
-}
+        TreeNode root = new TreeNode(6);
+        int[] valuesToAdd = { 4, 8, 5, 7, 9, 2, 3, 1 };
 
-public class CustomBinaryTree
-{
-    private TreeNode root;
-
-    public CustomBinaryTree()
-    {
-        root = null;
-    }
-
-    public void Add(int value)
-    {
-        if (root == null)
+        foreach (var value in valuesToAdd)
         {
-            root = new TreeNode(value);
+            root.Add(value);
         }
-        else
-        {
-            AddRecursively(root, value);
-        }
+
+        Console.WriteLine(root.Search(7)?.Value);
     }
 
-    private void AddRecursively(TreeNode node, int value)
+    public class TreeNode
     {
-        if (value % 2 == 0)
+        public int Value { get; private set; }
+        public TreeNode Left { get; private set; }
+        public TreeNode Right { get; private set; }
+
+        public TreeNode(int value)
         {
-            if (node.Left == null)
+            Value = value;
+        }
+
+        public void Add(int value)
+        {
+            TreeNode targetNode = value % 2 == 0 ? Left : Right;
+
+            if (targetNode == null)
             {
-                node.Left = new TreeNode(value);
+                if (value % 2 == 0)
+                {
+                    Left = new TreeNode(value);
+                }
+                else
+                {
+                    Right = new TreeNode(value);
+                }
             }
             else
             {
-                AddRecursively(node.Left, value);
+                targetNode.Add(value);
             }
         }
-        else
+
+        public TreeNode Search(int value)
         {
-            if (node.Right == null)
+            if (Value == value)
             {
-                node.Right = new TreeNode(value);
+                return this;
             }
-            else
-            {
-                AddRecursively(node.Right, value);
-            }
+
+            TreeNode targetNode = value % 2 == 0 ? Left : Right;
+
+            return targetNode?.Search(value);
         }
-    }
-
-    public bool Search(int value)
-    {
-        return SearchRecursively(root, value);
-    }
-
-    private bool SearchRecursively(TreeNode node, int value)
-    {
-        if (node == null)
-        {
-            return false;
-        }
-
-        if (node.Value == value)
-        {
-            return true;
-        }
-
-        if (value % 2 == 0)
-        {
-            return SearchRecursively(node.Left, value);
-        }
-        else
-        {
-            return SearchRecursively(node.Right, value);
-        }
-    }
-
-    public void InOrderTraversal()
-    {
-        InOrderTraversalRecursively(root);
-        Console.WriteLine();
-    }
-
-    private void InOrderTraversalRecursively(TreeNode node)
-    {
-        if (node != null)
-        {
-            InOrderTraversalRecursively(node.Left);
-            Console.Write(node.Value + " ");
-            InOrderTraversalRecursively(node.Right);
-        }
-    }
-}
-
-class Program
-{
-    static void Main()
-    {
-        CustomBinaryTree tree = new CustomBinaryTree();
-
-        tree.Add(1);
-        tree.Add(2);
-        tree.Add(3);
-        tree.Add(4);
-        tree.Add(5);
-        tree.Add(6);
-        tree.Add(7);
-        tree.Add(8);
-        tree.Add(9);
-        tree.Add(10);
-
-        Console.WriteLine("drzewo:");
-        tree.InOrderTraversal();
-
     }
 }
